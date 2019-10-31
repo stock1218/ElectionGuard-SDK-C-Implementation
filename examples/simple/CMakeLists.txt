@@ -22,6 +22,8 @@ add_executable(simple
     ${PROJECT_SOURCE_DIR}/main_voting.c
     ${PROJECT_SOURCE_DIR}/main_keyceremony.h
     ${PROJECT_SOURCE_DIR}/main_decryption.h
+    ${PROJECT_SOURCE_DIR}/main_rsa.h
+    ${PROJECT_SOURCE_DIR}/main_rsa.c
 )
 
 
@@ -32,7 +34,12 @@ message(STATUS "GMP library found.")
 message(STATUS "GMP include dir is: ${GMP_INCLUDE_DIR}")
 message(STATUS "GMP library is: ${GMP_LIBRARY}")
 
-target_link_libraries(simple electionguard gmp)
+if(APPLE)
+    target_link_libraries(simple electionguard ${GMP_LIBRARY})
+else()
+    target_link_libraries(simple electionguard gmp)
+endif()
+
 
 if (WIN32)
     target_link_libraries(simple Bcrypt)
